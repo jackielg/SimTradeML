@@ -1,5 +1,7 @@
 # SimTradeML
 
+English | [中文](./README_CN.md) | [Deutsch](./README_DE.md)
+
 **PTrade-compatible quantitative trading ML framework** - helps users quickly train prediction models for use in SimTradeLab and PTrade.
 
 ## Core Positioning
