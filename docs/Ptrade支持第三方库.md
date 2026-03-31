@@ -108,7 +108,7 @@
 106	wheel	0.29.0
 107	widgetsnbextension	1.2.6
 108	xcsc-tushare	1.0.0
-109	xgboost	0.6a2
+109	xgboost	1.7.4
 110	xlrd	1.1.0
 111	xlwt	1.3.0
 112	zipline	0.8.3

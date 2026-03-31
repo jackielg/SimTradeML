@@ -46,7 +46,7 @@ def sample_metadata():
         version='1.0',
         created_at=datetime.now().isoformat(),
         model_type='xgboost',
-        model_library_version='0.90',
+        model_library_version=xgb.__version__,
         features=['feat_a', 'feat_b', 'feat_c'],
         n_features=3,
         scaler_type='RobustScaler',

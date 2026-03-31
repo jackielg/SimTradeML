@@ -57,7 +57,7 @@ prediction = package.predict(features_dict)  # Auto-Validierung + Skalierung
 ## Kernfunktionen
 
 ### PTrade-Kompatibilität
-- ✅ **XGBoost 0.90**: PTrade-unterstützte Version
+- ✅ **XGBoost 1.7.4**: an die aktuelle PTrade-Umgebung angepasst
 - ✅ **Flexible Speicherformate**: JSON, Pickle, XGBoost-nativ
 - ✅ **Plug and Play**: Trainierte Modelle direkt in SimTradeLab verwendbar
 
@@ -118,10 +118,10 @@ poetry run pytest --cov=simtrademl --cov-report=html
 
 ## Abhängigkeiten
 
-**Kern**: Python 3.9+, numpy, pandas, scikit-learn, **xgboost 0.90** (PTrade-kompatible Version)
+**Kern**: Python 3.9+, numpy, pandas, scikit-learn, **xgboost 1.7.4** (an die aktuelle PTrade-Umgebung angepasst)
 **Optional**: simtradelab (Daten), optuna (Hyperparameteroptimierung), mlflow (Experiment-Tracking)
 
-> ⚠️ **Wichtig**: XGBoost-Version ist auf 0.90 festgelegt, um PTrade-Kompatibilität sicherzustellen. Nicht aktualisieren.
+> ⚠️ **Wichtig**: Die reale PTrade-Umgebung verwendet derzeit XGBoost 1.7.4, und dieses Projekt ist jetzt darauf abgestimmt.
 
 ## Lizenz
 

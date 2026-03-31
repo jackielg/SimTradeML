@@ -7,6 +7,7 @@ import pytest
 import json
 import tempfile
 import os
+import xgboost as xgb
 from datetime import datetime
 
 from simtrademl.core.models.metadata import ModelMetadata, create_model_id
@@ -22,7 +23,7 @@ class TestModelMetadata:
             version='1.0',
             created_at='2026-01-11T10:00:00',
             model_type='xgboost',
-            model_library_version='0.90',
+            model_library_version=xgb.__version__,
             features=['ma5', 'ma10', 'rsi14'],
             n_features=3
         )
@@ -40,7 +41,7 @@ class TestModelMetadata:
                 version='1.0',
                 created_at='2026-01-11T10:00:00',
                 model_type='xgboost',
-                model_library_version='0.90',
+                model_library_version=xgb.__version__,
                 features=['ma5', 'ma10'],
                 n_features=3  # Wrong!
             )
@@ -53,7 +54,7 @@ class TestModelMetadata:
                 version='1.0',
                 created_at='2026-01-11T10:00:00',
                 model_type='xgboost',
-                model_library_version='0.90',
+                model_library_version=xgb.__version__,
                 features=[],
                 n_features=0
             )
@@ -66,7 +67,7 @@ class TestModelMetadata:
                 version='1.0',
                 created_at='2026-01-11T10:00:00',
                 model_type='xgboost',
-                model_library_version='0.90',
+                model_library_version=xgb.__version__,
                 features=['ma5', 'ma10', 'ma5'],  # Duplicate!
                 n_features=3
             )
@@ -78,7 +79,7 @@ class TestModelMetadata:
             version='1.0',
             created_at='2026-01-11T10:00:00',
             model_type='xgboost',
-            model_library_version='0.90',
+            model_library_version=xgb.__version__,
             features=['ma5', 'ma10'],
             n_features=2
         )
@@ -96,7 +97,7 @@ class TestModelMetadata:
             version='1.0',
             created_at='2026-01-11T10:00:00',
             model_type='xgboost',
-            model_library_version='0.90',
+            model_library_version=xgb.__version__,
             features=['ma5', 'ma10'],
             n_features=2
         )
@@ -114,7 +115,7 @@ class TestModelMetadata:
             'version': '1.0',
             'created_at': '2026-01-11T10:00:00',
             'model_type': 'xgboost',
-            'model_library_version': '0.90',
+            'model_library_version': xgb.__version__,
             'features': ['ma5', 'ma10'],
             'n_features': 2
         }
@@ -126,17 +127,15 @@ class TestModelMetadata:
 
     def test_from_json(self):
         """Test creating from JSON string"""
-        json_str = '''
-        {
+        json_str = json.dumps({
             "model_id": "test",
             "version": "1.0",
             "created_at": "2026-01-11T10:00:00",
             "model_type": "xgboost",
-            "model_library_version": "0.90",
+            "model_library_version": xgb.__version__,
             "features": ["ma5", "ma10"],
-            "n_features": 2
-        }
-        '''
+            "n_features": 2,
+        })
 
         metadata = ModelMetadata.from_json(json_str)
 
@@ -150,7 +149,7 @@ class TestModelMetadata:
             version='1.0',
             created_at='2026-01-11T10:00:00',
             model_type='xgboost',
-            model_library_version='0.90',
+            model_library_version=xgb.__version__,
             features=['ma5', 'ma10', 'rsi14'],
             n_features=3
         )
@@ -178,7 +177,7 @@ class TestModelMetadata:
             version='1.0',
             created_at='2026-01-11T10:00:00',
             model_type='xgboost',
-            model_library_version='0.90',
+            model_library_version=xgb.__version__,
             features=['ma5', 'ma10', 'rsi14'],
             n_features=3
         )
@@ -193,7 +192,7 @@ class TestModelMetadata:
             version='1.0',
             created_at='2026-01-11T10:00:00',
             model_type='xgboost',
-            model_library_version='0.90',
+            model_library_version=xgb.__version__,
             features=['ma5', 'ma10', 'rsi14'],
             n_features=3
         )
@@ -208,7 +207,7 @@ class TestModelMetadata:
             version='1.0',
             created_at='2026-01-11T10:00:00',
             model_type='xgboost',
-            model_library_version='0.90',
+            model_library_version=xgb.__version__,
             features=['ma5', 'ma10', 'rsi14'],
             n_features=3
         )
@@ -223,7 +222,7 @@ class TestModelMetadata:
             version='1.0',
             created_at='2026-01-11T10:00:00',
             model_type='xgboost',
-            model_library_version='0.90',
+            model_library_version=xgb.__version__,
             features=['ma5', 'ma10'],
             n_features=2
         )
@@ -238,7 +237,7 @@ class TestModelMetadata:
             version='1.0',
             created_at='2026-01-11T10:00:00',
             model_type='xgboost',
-            model_library_version='0.90',
+            model_library_version=xgb.__version__,
             features=['ma5'],
             n_features=1
         )
@@ -256,7 +255,7 @@ class TestModelMetadata:
             version='1.0',
             created_at='2026-01-11T10:00:00',
             model_type='xgboost',
-            model_library_version='0.90',
+            model_library_version=xgb.__version__,
             features=['ma5'],
             n_features=1
         )
@@ -274,7 +273,7 @@ class TestModelMetadata:
             version='1.0',
             created_at='2026-01-11T10:00:00',
             model_type='xgboost',
-            model_library_version='0.90',
+            model_library_version=xgb.__version__,
             features=['ma5', 'ma10', 'rsi14'],
             n_features=3,
             scaler_type='RobustScaler',

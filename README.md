@@ -57,7 +57,7 @@ prediction = package.predict(features_dict)  # Auto validation + scaling
 ## Core Features
 
 ### PTrade Compatibility
-- ✅ **XGBoost 0.90**: PTrade supported version
+- ✅ **XGBoost 1.7.4**: aligned with the current PTrade environment
 - ✅ **Flexible Save Formats**: Supports JSON, Pickle, XGBoost native formats
 - ✅ **Plug and Play**: Trained models can be used directly in SimTradeLab
 
@@ -206,10 +206,10 @@ class MyDataSource(DataSource):
 
 ## Dependencies
 
-**Core**: Python 3.9+, numpy, pandas, scikit-learn, **xgboost 0.90** (PTrade compatible version)
+**Core**: Python 3.9+, numpy, pandas, scikit-learn, **xgboost 1.7.4** (aligned with the current PTrade environment)
 **Optional**: simtradelab (data), optuna (hyperparameter optimization), mlflow (experiment tracking)
 
-> ⚠️ **Important**: XGBoost version is locked at 0.90 to ensure PTrade compatibility. Do not upgrade.
+> ⚠️ **Important**: The real PTrade environment currently ships with XGBoost 1.7.4, and this project now aligns with that version.
 
 ## PTrade Integration Guide
 
@@ -264,7 +264,7 @@ features = [ma5, ma10, rsi14, ...]  # Order must be consistent
 
 ### Current Version (v0.2.0) - MVP ✅
 - [x] SimTradeLab data source integration
-- [x] XGBoost 0.90 training pipeline
+- [x] XGBoost 1.7.4 training pipeline
 - [x] Quantitative finance evaluation metrics
 - [x] Parallel data collection
 

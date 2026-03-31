@@ -18,8 +18,15 @@ SimTradeML 是 [SimTradeLab](https://github.com/kay-ou/SimTradeLab) 的 **机器
 
 ```bash
 cd /path/to/SimTradeML
-poetry install
-pip install simtradelab  # 如果需要使用 SimTradeLab 数据源
+python3 -m poetry lock
+python3 -m poetry install
+```
+
+如果本地使用同级目录中的 SimTradeLab 源码与数据，建议安装到 Poetry 虚拟环境：
+
+```bash
+python3 -m poetry run pip install -e ../SimTradeLab
+export SIMTRADELAB_DATA_PATH="/path/to/SimTradeLab/data"
 ```
 
 ### 5分钟训练第一个模型
@@ -30,7 +37,7 @@ mkdir -p data
 cp -r /path/to/SimTradeData/data/* data/
 
 # 2. 运行完整训练流程
-poetry run python examples/mvp_train.py
+python3 -m poetry run python examples/mvp_train.py
 ```
 
 ### 完整示例
@@ -38,6 +45,23 @@ poetry run python examples/mvp_train.py
 参考 `examples/` 目录：
 - **mvp_train.py** - 完整训练流程（数据收集、训练、导出）
 - **complete_example.py** - 推荐用法演示（单文件包）
+- **validate_ptrade_deploy.py** - 验证 `.ptp`、`model.json` 和原生 XGBoost 加载链路
+
+### 部署验证
+
+训练完成后，可用示例特征文件验证 PTrade 风格部署链路：
+
+```bash
+python3 -m poetry run python examples/validate_ptrade_deploy.py
+```
+
+如需只验证单一路径：
+
+```bash
+python3 -m poetry run python examples/validate_ptrade_deploy.py --mode ptp
+python3 -m poetry run python examples/validate_ptrade_deploy.py --mode json
+python3 -m poetry run python examples/validate_ptrade_deploy.py --mode raw_json
+```
 
 ### 推荐用法（单文件包）
 
@@ -56,7 +80,7 @@ prediction = package.predict(features_dict)  # 自动验证+缩放
 ## 核心特性
 
 ### PTrade 兼容性
-- ✅ **XGBoost 0.90**：PTrade 支持的版本
+- ✅ **XGBoost 1.7.4**：与当前 PTrade 环境对齐
 - ✅ **灵活保存格式**：支持 JSON、Pickle、XGBoost 原生格式
 - ✅ **即插即用**：训练的模型可直接在 SimTradeLab 中使用
 
@@ -205,10 +229,10 @@ class MyDataSource(DataSource):
 
 ## 依赖
 
-**核心**: Python 3.9+, numpy, pandas, scikit-learn, **xgboost 0.90** (PTrade 兼容版本)
+**核心**: Python 3.9+, numpy, pandas, scikit-learn, **xgboost 1.7.4** (与当前 PTrade 环境对齐)
 **可选**: simtradelab (数据), optuna (超参优化), mlflow (实验追踪)
 
-> ⚠️ **重要**：XGBoost 版本锁定在 0.90 以确保 PTrade 兼容性，请勿升级。
+> ⚠️ **重要**：真实 PTrade 环境当前安装的是 XGBoost 1.7.4，本项目默认按该版本对齐。
 
 ## PTrade 集成说明
 
@@ -263,7 +287,7 @@ features = [ma5, ma10, rsi14, ...]  # 顺序必须一致
 
 ### 当前版本 (v0.2.0) - MVP ✅
 - [x] SimTradeLab 数据源集成
-- [x] XGBoost 0.90 训练流程
+- [x] XGBoost 1.7.4 训练流程
 - [x] 量化金融评估指标
 - [x] 并行数据收集
 

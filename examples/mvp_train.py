@@ -61,7 +61,7 @@ def calculate_simple_features(price_df, lookback=60):
     features['return_20d'] = (closes[-1] - closes[-21]) / closes[-21]
 
     # Volatility
-    returns = np.diff(closes[-20:]) / closes[-21:-1]
+    returns = np.diff(closes[-20:]) / closes[-20:-1]
     features['volatility_20d'] = np.std(returns)
 
     # Volume features

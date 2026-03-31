@@ -12,6 +12,7 @@ from typing import Any, Optional, Dict
 from pathlib import Path
 import xgboost as xgb
 import numpy as np
+import pandas as pd
 
 from .metadata import ModelMetadata
 
@@ -198,12 +199,12 @@ class PTradeModelPackage:
         # Construct feature vector in correct order
         X = np.array([features_dict[name] for name in self.metadata.features]).reshape(1, -1)
 
-        # Apply scaler if available
+        X_input = pd.DataFrame(X, columns=self.metadata.features)
         if self.scaler is not None:
-            X = self.scaler.transform(X)
+            X_input = self.scaler.transform(X_input)
 
         # Predict
-        dmatrix = xgb.DMatrix(X)
+        dmatrix = xgb.DMatrix(X_input, feature_names=self.metadata.features)
         return float(self.model.predict(dmatrix)[0])
 
     def predict_batch(self, features_list: list[Dict[str, float]]) -> np.ndarray:
@@ -243,12 +244,12 @@ class PTradeModelPackage:
             for features in features_list
         ])
 
-        # Apply scaler if available
+        X_input = pd.DataFrame(X, columns=self.metadata.features)
         if self.scaler is not None:
-            X = self.scaler.transform(X)
+            X_input = self.scaler.transform(X_input)
 
         # Predict
-        dmatrix = xgb.DMatrix(X)
+        dmatrix = xgb.DMatrix(X_input, feature_names=self.metadata.features)
         return self.model.predict(dmatrix)
 
     def summary(self) -> str:
