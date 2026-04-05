@@ -44,8 +44,8 @@ python3 -m poetry run python examples/mvp_train.py
 
 参考 `examples/` 目录：
 - **mvp_train.py** - 完整训练流程（数据收集、训练、导出）
-- **complete_example.py** - 推荐用法演示（单文件包）
-- **validate_ptrade_deploy.py** - 验证 `.ptp`、`model.json` 和原生 XGBoost 加载链路
+- **complete_example.py** - 推荐用法演示（JSON-only 契约）
+- **validate_ptrade_deploy.py** - 验证 `model.json + metadata.json + scaler.json` 加载链路
 
 ### 部署验证
 
@@ -58,30 +58,33 @@ python3 -m poetry run python examples/validate_ptrade_deploy.py
 如需只验证单一路径：
 
 ```bash
-python3 -m poetry run python examples/validate_ptrade_deploy.py --mode ptp
 python3 -m poetry run python examples/validate_ptrade_deploy.py --mode json
-python3 -m poetry run python examples/validate_ptrade_deploy.py --mode raw_json
 ```
 
-### 推荐用法（单文件包）
+### 推荐用法（JSON-only）
 
 ```python
-from simtrademl.core.models import PTradeModelPackage
+import json
+import xgboost as xgb
+import numpy as np
 
-# 训练后保存（一个文件包含所有）
-package = PTradeModelPackage(model=model, scaler=scaler, metadata=metadata)
-package.save('my_model.ptp')
+# 训练后保存
+model.save_model('my_model.json')
+with open('my_model_scaler.json', 'w', encoding='utf-8') as f:
+    json.dump({'center': [...], 'scale': [...]}, f, ensure_ascii=False, indent=2)
 
-# PTrade 中加载和预测
-package = PTradeModelPackage.load('my_model.ptp')
-prediction = package.predict(features_dict)  # 自动验证+缩放
+# PTrade / SimTradeLab 中加载和预测
+booster = xgb.Booster()
+booster.load_model('my_model.json')
+dmatrix = xgb.DMatrix(np.array([[...]], dtype=float))
+prediction = booster.predict(dmatrix)[0]
 ```
 
 ## 核心特性
 
 ### PTrade 兼容性
 - ✅ **XGBoost 1.7.4**：与当前 PTrade 环境对齐
-- ✅ **灵活保存格式**：支持 JSON、Pickle、XGBoost 原生格式
+- ✅ **JSON-only 运行契约**：模型、metadata、特征顺序、scaler 参数均可文本审计
 - ✅ **即插即用**：训练的模型可直接在 SimTradeLab 中使用
 
 ### ML 能力
@@ -237,35 +240,27 @@ class MyDataSource(DataSource):
 ## PTrade 集成说明
 
 ### 模型导出格式
-PTrade 支持多种模型保存格式，只要兼容库可读即可：
+推荐在策略运行侧统一使用 JSON-only 契约：
 
 ```python
 import xgboost as xgb
+import json
 
 model = xgb.train(params, dtrain, ...)
 
-# 方式1: JSON 格式（推荐，人类可读）
+# 方式1: 模型 JSON（推荐，人类可读）
 model.save_model('my_model.json')
 
-# 方式2: XGBoost 原生格式
-model.save_model('my_model.model')
-
-# 方式3: Pickle 格式（通用）
-import pickle
-with open('my_model.pkl', 'wb') as f:
-    pickle.dump(model, f)
+# 方式2: 配套 scaler / metadata / features 也保存为 JSON
+with open('my_model_scaler.json', 'w', encoding='utf-8') as f:
+    json.dump({'center': [...], 'scale': [...]}, f, ensure_ascii=False, indent=2)
 ```
 
 ### 在 SimTradeLab 中使用
 ```python
-# 方式1: 加载 JSON/Model 格式
+# 方式1: 加载 JSON-only 模型
 import xgboost as xgb
 model = xgb.Booster(model_file='my_model.json')
-
-# 方式2: 加载 Pickle 格式
-import pickle
-with open('my_model.pkl', 'rb') as f:
-    model = pickle.load(f)
 
 # 预测
 features = [...]

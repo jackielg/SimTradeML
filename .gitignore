@@ -213,3 +213,5 @@ data/
 CLAUDE*.md
 .claude/*
 .spec-workflow/*
+*.pkl
+*.ptp

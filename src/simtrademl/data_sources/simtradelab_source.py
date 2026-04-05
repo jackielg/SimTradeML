@@ -6,7 +6,7 @@ SimTradeLab 数据源实现
 import logging
 import os
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Set
 
 import numpy as np
 import pandas as pd
@@ -27,10 +27,15 @@ class SimTradeLabDataSource(DataSource):
         "circulating_value": "float_value",
     }
 
-    def __init__(self, data_path: Optional[str] = None):
+    def __init__(
+        self,
+        data_path: Optional[str] = None,
+        required_data: Optional[Set[str]] = None,
+    ):
         """初始化数据源。"""
         self.data_path = self._resolve_data_path(data_path)
-        self.api = self._build_api(self.data_path)
+        self.required_data = set(required_data or {"price", "valuation", "fundamentals", "exrights"})
+        self.api = self._build_api(self.data_path, self.required_data)
         self._stock_cache: Optional[List[str]] = None
 
     @staticmethod
@@ -57,7 +62,7 @@ class SimTradeLabDataSource(DataSource):
         return None
 
     @staticmethod
-    def _build_api(data_path: Optional[str]):
+    def _build_api(data_path: Optional[str], required_data: Set[str]):
         """构建兼容当前 SimTradeLab 的本地 API。"""
         try:
             from simtradelab.ptrade import PtradeAPI, create_research_context
@@ -70,7 +75,7 @@ class SimTradeLabDataSource(DataSource):
 
         try:
             data_server = DataServer(
-                required_data={"price", "valuation", "fundamentals", "exrights"},
+                required_data=required_data,
                 frequency="1d",
                 data_path=data_path,
                 market="CN",
