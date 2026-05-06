@@ -215,3 +215,5 @@ CLAUDE*.md
 .spec-workflow/*
 *.pkl
 *.ptp
+.gitnexus
+AGENTS.md
