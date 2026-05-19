@@ -28,7 +28,7 @@ Python >=3.10, Poetry, XGBoost 1.7.4, scikit-learn, src/ layout
 <!-- gitnexus:start -->
 # GitNexus — Code Intelligence
 
-This project is indexed by GitNexus as **SimTradeML** (1662 symbols, 2230 relationships, 9 execution flows). Use the GitNexus MCP tools to understand code, assess impact, and navigate safely.
+This project is indexed by GitNexus as **SimTradeML** (1697 symbols, 2611 relationships, 35 execution flows). Use the GitNexus MCP tools to understand code, assess impact, and navigate safely.
 
 > If any GitNexus tool warns the index is stale, run `npx gitnexus analyze` in terminal first.
 
