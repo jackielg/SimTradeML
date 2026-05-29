@@ -210,6 +210,7 @@ __marimo__/
 .pytest_cache/
 data/
 *.json
+!.mcp.json
 CLAUDE*.md
 .claude/*
 .spec-workflow/*
