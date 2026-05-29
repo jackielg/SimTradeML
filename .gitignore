@@ -212,6 +212,7 @@ data/
 *.json
 !.mcp.json
 CLAUDE*.md
+!CLAUDE.md
 .claude/*
 .spec-workflow/*
 *.pkl

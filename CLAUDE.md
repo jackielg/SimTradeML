@@ -23,7 +23,8 @@ Python >=3.10, Poetry, XGBoost 1.7.4, scikit-learn, src/ layout
 - FeatureRegistry 使用装饰器模式，新增指标需在 technical.py 注册
 
 ## Out of Scope
-- 不自动推送到远程仓库
+- IMPORTANT: 永远不要推送到 upstream (kay-ou) 仓库，只允许 push origin (jackielg)
+- 不自动推送到远程仓库（需用户确认后才能 push origin）
 
 <!-- gitnexus:start -->
 # GitNexus — Code Intelligence
